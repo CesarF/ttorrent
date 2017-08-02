@@ -119,8 +119,8 @@ public class Client extends Observable implements Runnable,
 	 * @param address The address to bind to.
 	 * @param torrent The torrent to download and share.
 	 */
-	public Client(InetAddress address, SharedTorrent torrent)
-		throws UnknownHostException, IOException {
+	public Client(InetAddress address, SharedTorrent torrent, int[] rangePorts)
+		throws UnknownHostException, IOException, Exception {
 		this.torrent = torrent;
 		this.state = ClientState.WAITING;
 
@@ -129,7 +129,7 @@ public class Client extends Observable implements Runnable,
 
 		// Initialize the incoming connection handler and register ourselves to
 		// it.
-		this.service = new ConnectionHandler(this.torrent, id, address);
+		this.service = new ConnectionHandler(this.torrent, id, address, rangePorts);
 		this.service.register(this);
 
 		this.self = new Peer(

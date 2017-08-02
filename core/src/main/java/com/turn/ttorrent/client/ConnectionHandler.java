@@ -109,19 +109,27 @@ public class ConnectionHandler implements Runnable {
 	 * @param torrent The torrent shared by this client.
 	 * @param id This client's peer ID.
 	 * @param address The address to bind to.
-	 * @throws IOException When the service can't be started because no port in
+         * @param rangePort list of ports to be used by client, in case null or empty array the default port range will be from PORT_RANGE_START to PORT_RANGE_END.
+         * @throws IOException When the service can't be started because no port in
 	 * the defined range is available or usable.
 	 */
-	ConnectionHandler(SharedTorrent torrent, String id, InetAddress address)
-		throws IOException {
+	ConnectionHandler(SharedTorrent torrent, String id, InetAddress address, int[] rangePort)
+		throws IOException, Exception {
 		this.torrent = torrent;
 		this.id = id;
-
+                if (rangePort == null || rangePort.length == 0) {
+                    rangePort = new int[ConnectionHandler.PORT_RANGE_END 
+                            - ConnectionHandler.PORT_RANGE_START];
+                    for (int port = ConnectionHandler.PORT_RANGE_START, i = 0;
+				port <= ConnectionHandler.PORT_RANGE_END;
+				port++, i++) {
+                        rangePort[i] = port;
+                    }
+                }
 		// Bind to the first available port in the range
 		// [PORT_RANGE_START; PORT_RANGE_END].
-		for (int port = ConnectionHandler.PORT_RANGE_START;
-				port <= ConnectionHandler.PORT_RANGE_END;
-				port++) {
+                
+		for (int port: rangePort) {
 			InetSocketAddress tryAddress =
 				new InetSocketAddress(address, port);
 

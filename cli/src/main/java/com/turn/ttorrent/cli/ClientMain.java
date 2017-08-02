@@ -154,7 +154,7 @@ public class ClientMain {
 				getIPv4Address(ifaceValue),
 				SharedTorrent.fromFile(
 					new File(otherArgs[0]),
-					new File(outputValue)));
+					new File(outputValue)), null);
 
 			c.setMaxDownloadRate(maxDownloadRate);
 			c.setMaxUploadRate(maxUploadRate);
