@@ -13,10 +13,7 @@
   <version>1.6-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <modules>
-    <module>core</module>
-    <module>cli</module>
-  </modules>
+  <modules></modules>
 
   <scm>
     <connection>scm:git:git://github.com/mpetazzoni/ttorrent.git</connection>

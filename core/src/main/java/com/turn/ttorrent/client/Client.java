@@ -113,6 +113,11 @@ public class Client extends Observable implements Runnable,
 
 	private Random random;
 
+        
+        public Client(InetAddress address, SharedTorrent torrent)
+		throws UnknownHostException, IOException, Exception {
+            this(address, torrent, null);
+        }
 	/**
 	 * Initialize the BitTorrent client.
 	 *
@@ -129,7 +134,10 @@ public class Client extends Observable implements Runnable,
 
 		// Initialize the incoming connection handler and register ourselves to
 		// it.
-		this.service = new ConnectionHandler(this.torrent, id, address, rangePorts);
+                if (rangePorts == null || rangePorts.length == 0)
+                    this.service = new ConnectionHandler(this.torrent, id, address);
+                else
+                    this.service = new ConnectionHandler(this.torrent, id, address, rangePorts);
 		this.service.register(this);
 
 		this.self = new Peer(
